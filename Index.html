@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>DexCloud Site</title>
+</head>
+<body>
+  <h1>Welcome to DexCloud Site</h1>
+
+  <!-- Entra ID Login Button -->
+  <button onclick="signIn()">Login with Microsoft Entra ID</button>
+
+  <!-- MSAL.js Script -->
+  <script src="https://alcdn.msauth.net/browser/2.32.0/js/msal-browser.min.js"></script>
+  <script>
+    const msalConfig = {
+      auth: {
+        clientId: "69a00051-249e-43ac-a0ff-f20bfa25dc69",
+        authority: "https://login.microsoftonline.com/b2d9d52f-81db-4498-88d6-9ed16c01235a",
+        redirectUri: "https://dexcloud.section20.site/"
+      }
+    };
+
+    const msalInstance = new msal.PublicClientApplication(msalConfig);
+
+    function signIn() {
+      msalInstance.loginRedirect({
+        scopes: ["User.Read"]
+      });
+    }
+
+    msalInstance.handleRedirectPromise().then((response) => {
+      if (response) {
+        document.body.innerHTML = "<h2>Welcome, " + response.account.username + "</h2>";
+      }
+    });
+  </script>
+</body>
+</html>
